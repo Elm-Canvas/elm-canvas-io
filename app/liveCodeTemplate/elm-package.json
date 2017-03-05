@@ -1,0 +1,23 @@
+{
+    "version": "1.0.0",
+    "summary": "elm canvas website live template",
+    "repository": "https://github.com/mrozbarry/elm-canvas-io.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core": "5.1.1 <= v < 6.0.0",
+        "elm-lang/html": "2.0.0 <= v < 3.0.0",
+        "elm-lang/animation-frame": "1.0.0 <= v < 2.0.0",
+        "elm-community/canvas": "0.2.0 <= v < 2.0.0"
+    },
+    "source-dependencies": {
+        "elm-community/canvas": {
+            "url": "https://github.com/elm-community/canvas",
+            "ref": "0.2.0"
+        }
+    },
+    "elm-version": "0.18.0 <= v < 0.19.0"
+}
