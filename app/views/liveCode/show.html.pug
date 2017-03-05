@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title Your Elm Canvas Sample
+    link(href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet")
+    link(href="/css/editor.css" rel="stylesheet")
+
+
+  body
+    #elm-app(data-ws=ws data-liveCode=id)
+    script(type="text/javascript" src="/scripts/editor.js")
+    script(type="text/javascript").
+      var root = document.getElementById("elm-app")
+      var editor = Elm.Editor.embed(
+        root,
+        {
+          id: root.getAttribute("data-liveCode"),
+          ws: root.getAttribute("data-ws")
+        }
+      )
+      editor.ports.refreshFrames.subscribe(function () {
+        var iframes = document.getElementsByTagName("iframe")
+        for(var iframeIdx = 0; iframeIdx < iframes.length; iframeIdx++) {
+          iframes[iframeIdx].contentWindow.location.reload()
+        }
+      })

@@ -1,0 +1,96 @@
+var _elm_community$canvas$Canvas$clone = _elm_community$canvas$Native_Canvas.clone;
+var _elm_community$canvas$Canvas$setSize = _elm_community$canvas$Native_Canvas.setSize;
+var _elm_community$canvas$Canvas$getSize = _elm_community$canvas$Native_Canvas.getSize;
+var _elm_community$canvas$Canvas$getImageData = _elm_community$canvas$Native_Canvas.getImageData;
+var _elm_community$canvas$Canvas$loadImage = _elm_community$canvas$Native_Canvas.loadImage;
+var _elm_community$canvas$Canvas$batch = _elm_community$canvas$Native_Canvas.batch;
+var _elm_community$canvas$Canvas$toHtml = _elm_community$canvas$Native_Canvas.toHtml;
+var _elm_community$canvas$Canvas$initialize = _elm_community$canvas$Native_Canvas.initialize;
+var _elm_community$canvas$Canvas$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _elm_community$canvas$Canvas$Size = F2(
+	function (a, b) {
+		return {width: a, height: b};
+	});
+var _elm_community$canvas$Canvas$Canvas = {ctor: 'Canvas'};
+var _elm_community$canvas$Canvas$Error = {ctor: 'Error'};
+var _elm_community$canvas$Canvas$PutImageData = F3(
+	function (a, b, c) {
+		return {ctor: 'PutImageData', _0: a, _1: b, _2: c};
+	});
+var _elm_community$canvas$Canvas$BeginPath = {ctor: 'BeginPath'};
+var _elm_community$canvas$Canvas$FillStyle = function (a) {
+	return {ctor: 'FillStyle', _0: a};
+};
+var _elm_community$canvas$Canvas$StrokeStyle = function (a) {
+	return {ctor: 'StrokeStyle', _0: a};
+};
+var _elm_community$canvas$Canvas$StrokeRect = F2(
+	function (a, b) {
+		return {ctor: 'StrokeRect', _0: a, _1: b};
+	});
+var _elm_community$canvas$Canvas$Rect = F2(
+	function (a, b) {
+		return {ctor: 'Rect', _0: a, _1: b};
+	});
+var _elm_community$canvas$Canvas$Fill = {ctor: 'Fill'};
+var _elm_community$canvas$Canvas$Stroke = {ctor: 'Stroke'};
+var _elm_community$canvas$Canvas$MoveTo = function (a) {
+	return {ctor: 'MoveTo', _0: a};
+};
+var _elm_community$canvas$Canvas$LineTo = function (a) {
+	return {ctor: 'LineTo', _0: a};
+};
+var _elm_community$canvas$Canvas$LineWidth = function (a) {
+	return {ctor: 'LineWidth', _0: a};
+};
+var _elm_community$canvas$Canvas$LineCap = function (a) {
+	return {ctor: 'LineCap', _0: a};
+};
+var _elm_community$canvas$Canvas$GlobalCompositionOp = function (a) {
+	return {ctor: 'GlobalCompositionOp', _0: a};
+};
+var _elm_community$canvas$Canvas$GlobalAlpha = function (a) {
+	return {ctor: 'GlobalAlpha', _0: a};
+};
+var _elm_community$canvas$Canvas$FillText = F2(
+	function (a, b) {
+		return {ctor: 'FillText', _0: a, _1: b};
+	});
+var _elm_community$canvas$Canvas$StrokeText = F2(
+	function (a, b) {
+		return {ctor: 'StrokeText', _0: a, _1: b};
+	});
+var _elm_community$canvas$Canvas$Font = function (a) {
+	return {ctor: 'Font', _0: a};
+};
+var _elm_community$canvas$Canvas$Luminosity = {ctor: 'Luminosity'};
+var _elm_community$canvas$Canvas$Color = {ctor: 'Color'};
+var _elm_community$canvas$Canvas$Saturation = {ctor: 'Saturation'};
+var _elm_community$canvas$Canvas$Hue = {ctor: 'Hue'};
+var _elm_community$canvas$Canvas$Exclusion = {ctor: 'Exclusion'};
+var _elm_community$canvas$Canvas$Difference = {ctor: 'Difference'};
+var _elm_community$canvas$Canvas$SoftLight = {ctor: 'SoftLight'};
+var _elm_community$canvas$Canvas$HardLight = {ctor: 'HardLight'};
+var _elm_community$canvas$Canvas$ColorBurn = {ctor: 'ColorBurn'};
+var _elm_community$canvas$Canvas$ColorDodge = {ctor: 'ColorDodge'};
+var _elm_community$canvas$Canvas$Darken = {ctor: 'Darken'};
+var _elm_community$canvas$Canvas$Overlay = {ctor: 'Overlay'};
+var _elm_community$canvas$Canvas$Screen = {ctor: 'Screen'};
+var _elm_community$canvas$Canvas$Multiply = {ctor: 'Multiply'};
+var _elm_community$canvas$Canvas$Xor = {ctor: 'Xor'};
+var _elm_community$canvas$Canvas$Copy = {ctor: 'Copy'};
+var _elm_community$canvas$Canvas$Lighter = {ctor: 'Lighter'};
+var _elm_community$canvas$Canvas$DestinationAtop = {ctor: 'DestinationAtop'};
+var _elm_community$canvas$Canvas$DestinationOut = {ctor: 'DestinationOut'};
+var _elm_community$canvas$Canvas$DestinationIn = {ctor: 'DestinationIn'};
+var _elm_community$canvas$Canvas$DestinationOver = {ctor: 'DestinationOver'};
+var _elm_community$canvas$Canvas$SourceOver = {ctor: 'SourceOver'};
+var _elm_community$canvas$Canvas$SourceOut = {ctor: 'SourceOut'};
+var _elm_community$canvas$Canvas$SourceIn = {ctor: 'SourceIn'};
+var _elm_community$canvas$Canvas$SourceAtop = {ctor: 'SourceAtop'};
+var _elm_community$canvas$Canvas$Square = {ctor: 'Square'};
+var _elm_community$canvas$Canvas$Round = {ctor: 'Round'};
+var _elm_community$canvas$Canvas$Butt = {ctor: 'Butt'};

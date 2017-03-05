@@ -1,0 +1,30 @@
+var _mrozbarry$elm_canvas_io$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _mrozbarry$elm_canvas_io$Main$view = function (model) {
+	return A2(
+		_elm_community$canvas$Canvas$toHtml,
+		{ctor: '[]'},
+		model.canvas);
+};
+var _mrozbarry$elm_canvas_io$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _mrozbarry$elm_canvas_io$Main$initialModel = function () {
+	var canvas = _elm_community$canvas$Canvas$initialize(
+		A2(_elm_community$canvas$Canvas$Size, 800, 600));
+	return {canvas: canvas};
+}();
+var _mrozbarry$elm_canvas_io$Main$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _mrozbarry$elm_canvas_io$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none},
+		update: _mrozbarry$elm_canvas_io$Main$update,
+		view: _mrozbarry$elm_canvas_io$Main$view,
+		subscriptions: _mrozbarry$elm_canvas_io$Main$subscriptions
+	})();
+var _mrozbarry$elm_canvas_io$Main$Model = function (a) {
+	return {canvas: a};
+};
+var _mrozbarry$elm_canvas_io$Main$NoOp = {ctor: 'NoOp'};
