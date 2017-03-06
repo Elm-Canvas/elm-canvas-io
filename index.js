@@ -153,12 +153,18 @@ function onCleanup () {
       console.error("onCleanup.fail:", err)
     } else {
       contents.forEach(function (contentPath) {
-        let stat = fs.statSync(path.resolve(liveCodesFolder, contentPath, "src", "Entry.elm"))
-        let lastModified = stat.mtime.getTime()
-        if (Date.now() > (lastModified + maxLiveCodeLife)) {
-          rimraf(path.resolve(liveCodesFolder, contentPath), function () {
-            console.log("onCleanup.success (id=%s)", contentPath)
-          })
+        if (contentPath.substr(0, 1) != ".") {
+          try {
+            let stat = fs.statSync(path.resolve(liveCodesFolder, contentPath, "src", "Entry.elm"))
+            let lastModified = stat.mtime.getTime()
+            if (Date.now() > (lastModified + maxLiveCodeLife)) {
+              rimraf(path.resolve(liveCodesFolder, contentPath), function () {
+                console.log("onCleanup.success (id=%s)", contentPath)
+              })
+            }
+          } catch (e) {
+            // ...
+          }
         }
       })
     }
