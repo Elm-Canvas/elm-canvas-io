@@ -87,7 +87,6 @@ wss.on("connection", function (client) {
   const location = url.parse(client.upgradeReq.url, true)
 
   client.on("message", function (payloadStr) {
-    console.log("Client message", payloadStr)
     let payload = JSON.parse(payloadStr)
 
     switch (payload.action) {
@@ -108,7 +107,7 @@ wss.on("connection", function (client) {
           fs.writeFile(path.resolve(liveCodesFolder, client.__liveCodeId, "src", "Entry.elm"), payload.source, function () {
             compileLiveCode (client.__liveCodeId, function (error, exitCode) {
               console.log("compile.exitCode", exitCode)
-              if (error) {
+              if (error || (exitCode != 0)) {
                 client.send(JSON.stringify({ action: "error" }))
               } else {
                 client.send(JSON.stringify({ action: "compiled" }))
