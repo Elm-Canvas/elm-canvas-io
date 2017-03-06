@@ -1,7 +1,7 @@
 port module Editor exposing (..)
 
-import Html exposing (Html, div, text, textarea, button, iframe)
-import Html.Attributes exposing (style, class, value, src, width, height)
+import Html exposing (Html, div, text, textarea, button, iframe, span)
+import Html.Attributes exposing (style, class, value, src)
 import Html.Events exposing (onInput, onClick)
 import Json.Encode
 import Json.Decode
@@ -74,6 +74,8 @@ compileLiveCode websocketHost source =
     in
         WebSocket.send websocketHost (Debug.log "setLiveCodeId" payload)
 
+
+
 -- Models
 
 
@@ -82,8 +84,15 @@ type alias Model =
     , websocketHost : String
     , source : String
     , compiled : String
-    , canCompile : Bool
+    , currentView : View
+    , status : String
+    , hasLocked : Bool
     }
+
+
+type View
+    = Code
+    | Output
 
 
 initialModel : Model
@@ -93,6 +102,8 @@ initialModel =
     , source = ""
     , compiled = ""
     , canCompile = False
+    , currentView = Code
+    , status = "OK"
     }
 
 
@@ -102,12 +113,14 @@ initialModel =
 
 type Msg
     = BeginCompile
+    | Refresh
     | Incoming String
     | SourceChanged String
+    | SetCurrentView View
 
 
 type IncomingMsg
-    = Source String
+    = Source String Bool
     | Compiled
     | Error String
 
@@ -116,8 +129,13 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         BeginCompile ->
-            ( { model | canCompile = False }
+            ( { model | status = "Compiling" }
             , compileLiveCode model.websocketHost model.source
+            )
+
+        Refresh ->
+            ( model
+            , refreshFrames ()
             )
 
         Incoming json ->
@@ -136,31 +154,43 @@ update msg model =
                             source =
                                 Json.Decode.decodeString (Json.Decode.field "source" Json.Decode.string) json
                                     |> Result.withDefault ""
+
+                            hasLock : Bool
+                            hasLock =
+                                Json.Decode.decodeString (Json.Decode.field "lock" Json.Decode.bool) json
+                                    |> Result.withDefault ""
                         in
-                            Source source
+                            Source source hasLock
                     else if action == "compiled" then
                         Compiled
+                    else if action == "error" then
+                        Error "Compilation failed"
                     else
-                        Error "unknown message action"
+                        Error "Unknown message action"
             in
                 case incomingMsg of
-                    Source code ->
-                        ( { model | source = code }
+                    Source source locked ->
+                        ( { model | source = source, hasLock = locked, status = "OK" }
                         , Cmd.none
                         )
 
                     Compiled ->
-                        ( model
+                        ( { model | status = "OK" }
                         , refreshFrames ()
                         )
 
                     Error output ->
-                        ( model
+                        ( { model | status = "Error" }
                         , Cmd.none
                         )
 
         SourceChanged newSource ->
-            ( { model | source = newSource, canCompile = True }
+            ( { model | source = newSource, status = "OK" }
+            , Cmd.none
+            )
+
+        SetCurrentView currentView ->
+            ( { model | currentView = currentView }
             , Cmd.none
             )
 
@@ -174,23 +204,86 @@ view model =
     div
         []
         [ div
-            []
-            [ textarea
-                [ value model.source
-                , onInput SourceChanged
-                , class "editor"
-                ]
-                []
+            [ class "editor" ]
+            [ viewControls model
+            , viewTextArea model
             ]
-        , button [ onClick BeginCompile ] [ text "Compile" ]
-        , div [] [ text "Compiled Output" ]
-        , iframe
-            [ src ("/live/" ++ model.liveCodeId ++ "/compiled")
-            , width "100%"
-            , height "600px"
-            ]
-            []
+        , viewOutput model
         ]
+
+
+viewControls : Model -> Html Msg
+viewControls model =
+    let
+        currentViewButton : Html Msg
+        currentViewButton =
+            if model.currentView == Code then
+                button [ onClick (SetCurrentView Output) ] [ text "Show Output" ]
+            else
+                button [ onClick (SetCurrentView Code) ] [ text "Show Code" ]
+
+        mainActionButton : Html Msg
+        mainActionButton =
+            if model.hasLock then
+                button [ onClick BeginCompile ] [ text "Compile" ]
+            else
+                button [ onClick Refresh ] [ text "Refresh Output" ]
+    in
+        div
+            [ class "editor__controls" ]
+            [ div
+                [ class "flex--row" ]
+                [ mainActionButton
+                , div [ class "flex-spacer" ] []
+                , currentViewButton
+                ]
+            ]
+
+
+viewTextArea : Model -> Html Msg
+viewTextArea model =
+    div
+        [ style
+            [ ( "display"
+              , (if model.currentView == Code then
+                    "block"
+                 else
+                    "none"
+                )
+              )
+            ]
+        ]
+        [ textarea
+            [ value model.source
+            , onInput SourceChanged
+            , class "editor__code"
+            ]
+            []
+        , div
+            [ class "editor__status" ]
+            [ span [] [ text "Status: " ]
+            , span [ class ("status--" ++ model.status) ] [ text model.status ]
+            ]
+        ]
+
+
+viewOutput : Model -> Html Msg
+viewOutput model =
+    iframe
+        [ src ("/live/" ++ model.liveCodeId ++ "/compiled")
+        , style
+            [ ( "width", "100%" )
+            , ( "height", "600px" )
+            , ( "display"
+              , (if model.currentView == Code then
+                    "none"
+                 else
+                    "block"
+                )
+              )
+            ]
+        ]
+        []
 
 
 

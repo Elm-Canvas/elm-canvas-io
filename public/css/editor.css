@@ -6,14 +6,59 @@
 }
 
 .editor {
+  padding: 10px 0;
+  background-color: #073642;
+}
+
+.editor__controls {
+  padding: 0 5px;
+  margin-bottom: 10px;
+}
+
+.editor__code {
   font-family: "hasklig", "Source Code Pro", monospace;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: contextual;
   font-size: 14px;
-  background-color: #073642;
+  background-color: #002b36;
   color: #eee8d5;
-  padding: 5px 20px;
   width: 100%;
   height: 600px;
   box-sizing: border-box;
+  border: 0;
+  outline: 0;
+  padding: 0 10px;
+}
+
+.editor__status {
+  font-family: "hasklig", "Source Code Pro", monospace;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: contextual;
+  font-size: 14px;
+  color: #93a1a1;
+  padding: 0 10px;
+}
+
+.flex--row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+.status--OK {
+  color: #b58900;
+}
+
+.status--Compiling {
+  color: #859900;
+}
+
+.status--Error {
+  color: #dc322f;
 }

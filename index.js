@@ -106,8 +106,13 @@ wss.on("connection", function (client) {
       case "compile":
         if (client.__hasLock && validateLiveCodeId(client.__liveCodeId)) {
           fs.writeFile(path.resolve(liveCodesFolder, client.__liveCodeId, "src", "Entry.elm"), payload.source, function () {
-            compileLiveCode (client.__liveCodeId, function () {
-              client.send(JSON.stringify({ action: "compiled" }))
+            compileLiveCode (client.__liveCodeId, function (error, exitCode) {
+              console.log("compile.exitCode", exitCode)
+              if (error) {
+                client.send(JSON.stringify({ action: "error" }))
+              } else {
+                client.send(JSON.stringify({ action: "compiled" }))
+              }
             })
           })
         }
@@ -134,6 +139,7 @@ onInit()
 
 function onInit () {
   fs.mkdir(liveCodesFolder, 0o777, function () {
+    unlockAll()
     server.listen(8080, function () {
       console.log("Server listening on port %d", server.address().port)
       onCleanup()
@@ -158,6 +164,22 @@ function onCleanup () {
     }
   })
   setTimeout(onCleanup, cleanupTimeout)
+}
+
+function unlockAll () {
+  fs.readdir(liveCodesFolder, function (err, contents) {
+    if (err) {
+      console.error("onCleanup.fail:", err)
+    } else {
+      contents.forEach(function (contentPath) {
+        let lockFile = path.resolve(liveCodesFolder, contentPath, ".locked")
+        let stat = fs.statSync(lockFile)
+        if (stat.isFile()) {
+          fs.unlink(lockFile)
+        }
+      })
+    }
+  })
 }
 
 function validateLiveCodeId (id) {
@@ -214,7 +236,9 @@ function compileLiveCode (id, done) {
       output: "entry.html"
     }
   ).on("close", function (exitCode) {
-    done(exitCode, path.resolve(liveCodesFolder, id, "entry.html"))
+    done(null, exitCode)
+  }).on("error", function (output) {
+    done(output, -1)
   })
 }
 
@@ -228,7 +252,7 @@ function sendLiveCodeSource (client) {
         console.error("sendLiveCodeSource.fail (id=%s): %s", id, err)
       } else {
         console.log("sendLiveCodeSource.success (id=%s)", id)
-        client.send(JSON.stringify({ action: "source", source: raw }))
+        client.send(JSON.stringify({ action: "source", source: raw, lock: client.__hasLock }))
       }
     })
   } else {

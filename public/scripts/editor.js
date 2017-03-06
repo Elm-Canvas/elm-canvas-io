@@ -9211,7 +9211,6 @@ var _elm_lang$websocket$WebSocket$onSelfMsg = F3(
 	});
 _elm_lang$core$Native_Platform.effectManagers['WebSocket'] = {pkg: 'elm-lang/websocket', init: _elm_lang$websocket$WebSocket$init, onEffects: _elm_lang$websocket$WebSocket$onEffects, onSelfMsg: _elm_lang$websocket$WebSocket$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$websocket$WebSocket$cmdMap, subMap: _elm_lang$websocket$WebSocket$subMap};
 
-var _user$project$Editor$initialModel = {liveCodeId: '', websocketHost: '', source: '', compiled: '', canCompile: false};
 var _user$project$Editor$compileLiveCode = F2(
 	function (websocketHost, source) {
 		var payload = A2(
@@ -9268,15 +9267,6 @@ var _user$project$Editor$setLiveCodeId = F2(
 			websocketHost,
 			A2(_elm_lang$core$Debug$log, 'setLiveCodeId', payload));
 	});
-var _user$project$Editor$init = function (flags) {
-	return {
-		ctor: '_Tuple2',
-		_0: _elm_lang$core$Native_Utils.update(
-			_user$project$Editor$initialModel,
-			{liveCodeId: flags.id, websocketHost: flags.ws}),
-		_1: A2(_user$project$Editor$setLiveCodeId, flags.ws, flags.id)
-	};
-};
 var _user$project$Editor$refreshFrames = _elm_lang$core$Native_Platform.outgoingPort(
 	'refreshFrames',
 	function (v) {
@@ -9286,12 +9276,138 @@ var _user$project$Editor$Flags = F2(
 	function (a, b) {
 		return {id: a, ws: b};
 	});
-var _user$project$Editor$Model = F5(
-	function (a, b, c, d, e) {
-		return {liveCodeId: a, websocketHost: b, source: c, compiled: d, canCompile: e};
+var _user$project$Editor$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {liveCodeId: a, websocketHost: b, source: c, compiled: d, canCompile: e, currentView: f, status: g};
 	});
+var _user$project$Editor$Output = {ctor: 'Output'};
+var _user$project$Editor$Code = {ctor: 'Code'};
+var _user$project$Editor$initialModel = {liveCodeId: '', websocketHost: '', source: '', compiled: '', canCompile: false, currentView: _user$project$Editor$Code, status: 'OK'};
+var _user$project$Editor$init = function (flags) {
+	return {
+		ctor: '_Tuple2',
+		_0: _elm_lang$core$Native_Utils.update(
+			_user$project$Editor$initialModel,
+			{liveCodeId: flags.id, websocketHost: flags.ws}),
+		_1: A2(_user$project$Editor$setLiveCodeId, flags.ws, flags.id)
+	};
+};
+var _user$project$Editor$viewOutput = function (model) {
+	return A2(
+		_elm_lang$html$Html$iframe,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$src(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/live/',
+					A2(_elm_lang$core$Basics_ops['++'], model.liveCodeId, '/compiled'))),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'height', _1: '600px'},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'display',
+									_1: _elm_lang$core$Native_Utils.eq(model.currentView, _user$project$Editor$Code) ? 'none' : 'block'
+								},
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		},
+		{ctor: '[]'});
+};
+var _user$project$Editor$SetCurrentView = function (a) {
+	return {ctor: 'SetCurrentView', _0: a};
+};
 var _user$project$Editor$SourceChanged = function (a) {
 	return {ctor: 'SourceChanged', _0: a};
+};
+var _user$project$Editor$viewTextArea = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'display',
+						_1: _elm_lang$core$Native_Utils.eq(model.currentView, _user$project$Editor$Code) ? 'block' : 'none'
+					},
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$textarea,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$value(model.source),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onInput(_user$project$Editor$SourceChanged),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('editor__code'),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('editor__status'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Status: '),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class(
+										A2(_elm_lang$core$Basics_ops['++'], 'status--', model.status)),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(model.status),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$Editor$Incoming = function (a) {
 	return {ctor: 'Incoming', _0: a};
@@ -9308,6 +9424,82 @@ var _user$project$Editor$subscriptions = function (model) {
 		});
 };
 var _user$project$Editor$BeginCompile = {ctor: 'BeginCompile'};
+var _user$project$Editor$viewControls = function (model) {
+	var currentViewButton = _elm_lang$core$Native_Utils.eq(model.currentView, _user$project$Editor$Code) ? A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(
+				_user$project$Editor$SetCurrentView(_user$project$Editor$Output)),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Show Output'),
+			_1: {ctor: '[]'}
+		}) : A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(
+				_user$project$Editor$SetCurrentView(_user$project$Editor$Code)),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Show Code'),
+			_1: {ctor: '[]'}
+		});
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('editor__controls'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('flex--row'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Editor$BeginCompile),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Compile'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('flex-spacer'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: currentViewButton,
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$Editor$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9316,68 +9508,24 @@ var _user$project$Editor$view = function (model) {
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$div,
-				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$textarea,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$value(model.source),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onInput(_user$project$Editor$SourceChanged),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('editor'),
-									_1: {ctor: '[]'}
-								}
-							}
-						},
-						{ctor: '[]'}),
+					_0: _elm_lang$html$Html_Attributes$class('editor'),
 					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _user$project$Editor$viewControls(model),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Editor$viewTextArea(model),
+						_1: {ctor: '[]'}
+					}
 				}),
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$button,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(_user$project$Editor$BeginCompile),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Compile'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Compiled Output'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$iframe,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$src(
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										'/live/',
-										A2(_elm_lang$core$Basics_ops['++'], model.liveCodeId, '/compiled'))),
-								_1: {ctor: '[]'}
-							},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}
-				}
+				_0: _user$project$Editor$viewOutput(model),
+				_1: {ctor: '[]'}
 			}
 		});
 };
@@ -9397,7 +9545,7 @@ var _user$project$Editor$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{canCompile: false}),
+						{status: 'Compiling'}),
 					_1: A2(_user$project$Editor$compileLiveCode, model.websocketHost, model.source)
 				};
 			case 'Incoming':
@@ -9426,7 +9574,11 @@ var _user$project$Editor$update = F2(
 						if (_elm_lang$core$Native_Utils.eq(action, 'compiled')) {
 							return _user$project$Editor$Compiled;
 						} else {
-							return _user$project$Editor$Error('unknown message action');
+							if (_elm_lang$core$Native_Utils.eq(action, 'error')) {
+								return _user$project$Editor$Error('Compilation failed');
+							} else {
+								return _user$project$Editor$Error('Unknown message action');
+							}
 						}
 					}
 				}();
@@ -9437,25 +9589,41 @@ var _user$project$Editor$update = F2(
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{source: _p1._0}),
+								{source: _p1._0, status: 'OK'}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					case 'Compiled':
 						return {
 							ctor: '_Tuple2',
-							_0: model,
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{status: 'OK'}),
 							_1: _user$project$Editor$refreshFrames(
 								{ctor: '_Tuple0'})
 						};
 					default:
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{status: 'Error'}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
 				}
+			case 'SourceChanged':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{source: _p0._0, status: 'OK'}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{source: _p0._0, canCompile: true}),
+						{currentView: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
