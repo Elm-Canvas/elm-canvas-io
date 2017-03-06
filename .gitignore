@@ -1,3 +1,4 @@
 node_modules
 elm_stuff
-./temp
+temp
+app/elm-apps/editor/elm-stuff
