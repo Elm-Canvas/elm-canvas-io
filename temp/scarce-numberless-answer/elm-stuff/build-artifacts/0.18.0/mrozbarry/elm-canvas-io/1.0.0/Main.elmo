@@ -2,7 +2,10 @@ var _mrozbarry$elm_canvas_io$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _mrozbarry$elm_canvas_io$Main$view = function (model) {
-	return _elm_lang$html$Html$text('view code');
+	return A2(
+		_elm_community$canvas$Canvas$toHtml,
+		{ctor: '[]'},
+		model.canvas);
 };
 var _mrozbarry$elm_canvas_io$Main$update = F2(
 	function (msg, model) {

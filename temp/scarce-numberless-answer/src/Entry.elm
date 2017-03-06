@@ -60,7 +60,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    text "view code"
+    Canvas.toHtml [] model.canvas
 
 
 
