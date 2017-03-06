@@ -86,7 +86,7 @@ type alias Model =
     , compiled : String
     , currentView : View
     , status : String
-    , hasLocked : Bool
+    , hasLock : Bool
     }
 
 
@@ -101,9 +101,9 @@ initialModel =
     , websocketHost = ""
     , source = ""
     , compiled = ""
-    , canCompile = False
     , currentView = Code
     , status = "OK"
+    , hasLock = False
     }
 
 
@@ -158,7 +158,7 @@ update msg model =
                             hasLock : Bool
                             hasLock =
                                 Json.Decode.decodeString (Json.Decode.field "lock" Json.Decode.bool) json
-                                    |> Result.withDefault ""
+                                    |> Result.withDefault False
                         in
                             Source source hasLock
                     else if action == "compiled" then

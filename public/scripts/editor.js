@@ -9278,11 +9278,11 @@ var _user$project$Editor$Flags = F2(
 	});
 var _user$project$Editor$Model = F7(
 	function (a, b, c, d, e, f, g) {
-		return {liveCodeId: a, websocketHost: b, source: c, compiled: d, canCompile: e, currentView: f, status: g};
+		return {liveCodeId: a, websocketHost: b, source: c, compiled: d, currentView: e, status: f, hasLock: g};
 	});
 var _user$project$Editor$Output = {ctor: 'Output'};
 var _user$project$Editor$Code = {ctor: 'Code'};
-var _user$project$Editor$initialModel = {liveCodeId: '', websocketHost: '', source: '', compiled: '', canCompile: false, currentView: _user$project$Editor$Code, status: 'OK'};
+var _user$project$Editor$initialModel = {liveCodeId: '', websocketHost: '', source: '', compiled: '', currentView: _user$project$Editor$Code, status: 'OK', hasLock: false};
 var _user$project$Editor$init = function (flags) {
 	return {
 		ctor: '_Tuple2',
@@ -9423,8 +9423,32 @@ var _user$project$Editor$subscriptions = function (model) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$Editor$Refresh = {ctor: 'Refresh'};
 var _user$project$Editor$BeginCompile = {ctor: 'BeginCompile'};
 var _user$project$Editor$viewControls = function (model) {
+	var mainActionButton = model.hasLock ? A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(_user$project$Editor$BeginCompile),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Compile'),
+			_1: {ctor: '[]'}
+		}) : A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(_user$project$Editor$Refresh),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Refresh Output'),
+			_1: {ctor: '[]'}
+		});
 	var currentViewButton = _elm_lang$core$Native_Utils.eq(model.currentView, _user$project$Editor$Code) ? A2(
 		_elm_lang$html$Html$button,
 		{
@@ -9468,18 +9492,7 @@ var _user$project$Editor$viewControls = function (model) {
 				},
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$button,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onClick(_user$project$Editor$BeginCompile),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Compile'),
-							_1: {ctor: '[]'}
-						}),
+					_0: mainActionButton,
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -9533,9 +9546,10 @@ var _user$project$Editor$Error = function (a) {
 	return {ctor: 'Error', _0: a};
 };
 var _user$project$Editor$Compiled = {ctor: 'Compiled'};
-var _user$project$Editor$Source = function (a) {
-	return {ctor: 'Source', _0: a};
-};
+var _user$project$Editor$Source = F2(
+	function (a, b) {
+		return {ctor: 'Source', _0: a, _1: b};
+	});
 var _user$project$Editor$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -9547,6 +9561,13 @@ var _user$project$Editor$update = F2(
 						model,
 						{status: 'Compiling'}),
 					_1: A2(_user$project$Editor$compileLiveCode, model.websocketHost, model.source)
+				};
+			case 'Refresh':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Editor$refreshFrames(
+						{ctor: '_Tuple0'})
 				};
 			case 'Incoming':
 				var _p2 = _p0._0;
@@ -9562,6 +9583,13 @@ var _user$project$Editor$update = F2(
 							_p2)));
 				var incomingMsg = function () {
 					if (_elm_lang$core$Native_Utils.eq(action, 'source')) {
+						var hasLock = A2(
+							_elm_lang$core$Result$withDefault,
+							false,
+							A2(
+								_elm_lang$core$Json_Decode$decodeString,
+								A2(_elm_lang$core$Json_Decode$field, 'lock', _elm_lang$core$Json_Decode$bool),
+								_p2));
 						var source = A2(
 							_elm_lang$core$Result$withDefault,
 							'',
@@ -9569,7 +9597,7 @@ var _user$project$Editor$update = F2(
 								_elm_lang$core$Json_Decode$decodeString,
 								A2(_elm_lang$core$Json_Decode$field, 'source', _elm_lang$core$Json_Decode$string),
 								_p2));
-						return _user$project$Editor$Source(source);
+						return A2(_user$project$Editor$Source, source, hasLock);
 					} else {
 						if (_elm_lang$core$Native_Utils.eq(action, 'compiled')) {
 							return _user$project$Editor$Compiled;
@@ -9589,7 +9617,7 @@ var _user$project$Editor$update = F2(
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{source: _p1._0, status: 'OK'}),
+								{source: _p1._0, hasLock: _p1._1, status: 'OK'}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					case 'Compiled':
