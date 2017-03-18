@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Open+Sans");
+html,
+body {
+  margin: 0;
+  padding: 0; }
+
+body * {
+  box-sizing: border-box; }
+
+body {
+  font-family: "Open Sans", sans-serif; }
+
+.heading {
+  font-family: Montserrat, sans-serif; }
