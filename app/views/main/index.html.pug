@@ -36,14 +36,6 @@ block body
       h1.heading Getting set up in under 1 minute
 
       .body-group
-        h2.heading( style="margin-top: 0;" ) Things you need
-
-        pre.code
-          code( class="bash" ).
-            # Install the latest elm and elm-github-install
-            npm install -g elm elm-github-install
-
-      .body-group
         h2.heading( style="margin-top: 0;" ) Add elm-canvas to your project
 
         pre.code
@@ -69,6 +61,15 @@ block body
                 },
                 "elm-version": "0.18.0 <= v < 0.19.0"
             }
+
+      .body-group
+        h2.heading( style="margin-top: 0;" ) Install elm canvas
+
+        pre.code
+          code( class="bash" ).
+            # Install the latest elm-github-install
+            $ npm install -g elm-github-install
+            $ elm-install
 
       .body-group
         h2.heading( style="margin-top: 0;" ) Import as you need
