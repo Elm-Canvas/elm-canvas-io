@@ -1,33 +1,105 @@
 extends ../layouts/application.html.pug
 
 block body
-  .page.page--demo#page-1
+  .page.page--demo#top
     .page__body
       Main content goes here...(demo reel)
 
     .page__footer
-      h1.heading( style="font-size: 36px;" ) Elm Canvas
+      h1.heading.flex-spacer( style="font-size: 36px;" ) Elm Canvas
 
-      .flex-spacer
+      a.page__footer-link.flex-spacer( href="#get-started" )
+        .heading Get Started
 
-      a.page__footer-link( href="#page-2" style="margin-bottom: -40px;" )
-        .heading Getting Started
-        i.fa.fa-chevron-down
+      .page__footer-links
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="/tryit" )
+          i.fa.fa-code
+          .heading Try It!
 
-      .flex-spacer
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="#reference" )
+          i.fa.fa-file
+          .heading Reference
 
-      a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="/tryit" )
-        i.fa.fa-code
-        .heading Try It!
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://github.com/chadtech/elm-canvas" )
+          i.fa.fa-github
+          .heading Github
 
-      a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="#reference" )
-        i.fa.fa-file
-        .heading Reference
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://elmlang.slack.com/messages/canvas" )
+          i.fa.fa-slack
+          .heading Slack
 
-      a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://github.com/chadtech/elm-canvas" )
-        i.fa.fa-github
-        .heading Github
+  .body.page#get-started
+    .flex-spacer
 
-      a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://elmlang.slack.com/messages/canvas" )
-        i.fa.fa-slack
-        .heading Slack
+    .page__body
+
+      h1.heading Getting set up in under 1 minute
+
+      .body-group
+        h2.heading( style="margin-top: 0;" ) Things you need
+
+        pre.code
+          code( class="bash" ).
+            # Install the latest elm and elm-github-install
+            npm install -g elm elm-github-install
+
+      .body-group
+        h2.heading( style="margin-top: 0;" ) Add elm-canvas to your project
+
+        pre.code
+          code( class="json" ).
+            {
+                "version": "1.0.0",
+                "summary": "Getting started with elm-canvas",
+                "repository": "https://github.com/you/your-canvas-app.git",
+                "license": "MIT",
+                "source-directories": [
+                    "src"
+                ],
+                "exposed-modules": [],
+                "dependencies": {
+                    "elm-lang/core": "5.0.0 <= v < 6.0.0",
+                    "elm-lang/html": "2.0.0 <= v < 3.0.0",
+                    "Elm-Canvas/elm-canvas": "0.2.0 <= v <= #{currentVersion}"
+                },
+                "dependency-sources": {
+                    "Elm-Canvas/elm-canvas": {
+                      "url": "https://github.com/Elm-Canvas/elm-canvas"
+                    }
+                },
+                "elm-version": "0.18.0 <= v < 0.19.0"
+            }
+
+      .body-group
+        h2.heading( style="margin-top: 0;" ) Import as you need
+
+        pre.code
+          code( class="elm" ).
+            module YourModule exposing (..)
+
+            -- The elm-canvas core
+            import Canvas
+            -- Canvas coordinates
+            import Canvas.Point
+
+    .flex-spacer
+    .page__footer
+      a.page__footer-link.flex-spacer( href="#your-first-canvas-app" style="text-align: center;" )
+        .heading Your first canvas app
+
+  .page#your-first-canvas-app
+    .page__body.body
+
+    .flex-spacer
+    .page__footer.gradient
+      h2.flex-spacer.heading Support
+
+      a.page__footer-link.flex-spacer( href="#top" style="text-align: center;" )
+        .heading back to top
+
+      .page__footer-links
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://github.com/Elm-Canvas/elm-canvas/issues" style="padding: 0" )
+          .heading github issues
+
+        a.page__footer-link.page__footer-link--grouped.page__footer-link--highlight( href="https://elmlang.slack.com/messages/canvas" style="padding: 0" )
+          .heading #canvas

@@ -2,6 +2,12 @@ html,
 body {
   height: 100%; }
 
+.gradient, .page--demo {
+  color: white;
+  background: #7474bf;
+  background: -webkit-linear-gradient(to left, #7474bf, #348ac7);
+  background: linear-gradient(to left, #7474bf, #348ac7); }
+
 .page {
   display: flex;
   flex-direction: column;
@@ -10,16 +16,10 @@ body {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  height: 100%;
-  padding: 15px; }
-  .page--demo {
-    color: white;
-    background: #7474bf;
-    background: -webkit-linear-gradient(to left, #7474bf, #348ac7);
-    background: linear-gradient(to left, #7474bf, #348ac7); }
-    .page--demo .page__body {
-      border: 1px black solid;
-      margin-bottom: 10px; }
+  height: 100%; }
+  .page--demo .page__body {
+    border: 1px black solid;
+    margin-bottom: 10px; }
   .page__body {
     flex-grow: 1;
     width: 100%; }
@@ -30,9 +30,18 @@ body {
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    padding: 10px;
+    height: 78px; }
     .page__footer .heading {
       margin: 0; }
+    .page__footer-links {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-end;
+      flex-grow: 1; }
     .page__footer-link {
       color: inherit;
       text-decoration: none;
@@ -51,3 +60,22 @@ body {
 
 .flex-spacer {
   flex-grow: 1; }
+
+.body {
+  box-sizing: border-box;
+  min-width: 350px;
+  max-width: 920px;
+  margin: 0 auto; }
+  .body-group {
+    width: 100%;
+    background-color: #fafafa;
+    padding: 10px;
+    border: 1px #efefef solid;
+    border-radius: 5px;
+    margin: 10px 0; }
+
+pre.code {
+  width: 100%;
+  border: 1px #efefef solid; }
+  pre.code code {
+    padding: 5px; }

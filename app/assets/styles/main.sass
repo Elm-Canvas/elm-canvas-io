@@ -4,6 +4,12 @@ html,
 body
   height: 100%
 
+.gradient
+  color: white
+  background: $primary-color
+  background: -webkit-linear-gradient(to left, $primary-color, $secondary-color)
+  background: linear-gradient(to left, $primary-color, $secondary-color)
+
 .page
   display: flex
   flex-direction: column
@@ -13,13 +19,9 @@ body
   overflow: hidden
   position: relative
   height: 100%
-  padding: 15px
 
   &--demo
-    color: white
-    background: $primary-color
-    background: -webkit-linear-gradient(to left, $primary-color, $secondary-color)
-    background: linear-gradient(to left, $primary-color, $secondary-color)
+    @extend .gradient
 
     .page__body
       border: 1px black solid
@@ -37,9 +39,19 @@ body
     flex-wrap: nowrap
     align-items: center
     justify-content: center
+    padding: 10px
+    height: 78px
 
     .heading
       margin: 0
+
+    &-links
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+      align-items: center
+      justify-content: flex-end
+      flex-grow: 1
 
     &-link
       color: inherit
@@ -63,3 +75,24 @@ body
 
 .flex-spacer
   flex-grow: 1
+
+.body
+  box-sizing: border-box
+  min-width: 350px
+  max-width: 920px
+  margin: 0 auto
+
+  &-group
+    width: 100%
+    background-color: #fafafa
+    padding: 10px
+    border: 1px #efefef solid
+    border-radius: 5px
+    margin: 10px 0
+
+
+pre.code
+  width: 100%
+  border: 1px #efefef solid
+  code
+    padding: 5px

@@ -6,8 +6,12 @@ html( lang="en" )
     link( rel="stylesheet" href="/assets/application.css" )
     link( rel="stylesheet" href="/assets/main.css" )
     script( type="text/javascript" href="/assets/application.js" )
-    script( type="text/javascript" src="https://use.fontawesome.com/644c3433d2.js" )
+    script( type="text/javascript" src="//use.fontawesome.com/644c3433d2.js" )
+    link( rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/color-brewer.min.css" )
     block head
 
   body
     block body
+    script( src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js" )
+    script( type="text/javascript" ).
+      hljs.initHighlightingOnLoad()

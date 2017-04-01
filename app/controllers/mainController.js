@@ -10,8 +10,7 @@ const render = function (response, view, locals) {
 // Responses
 
 const index = function (request, response) {
-  console.log("mainController#index")
-  render(response, "index")
+  render(response, "index", { currentVersion: "0.3.0" })
 }
 
 // Routes
