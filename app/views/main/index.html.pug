@@ -39,28 +39,8 @@ block body
         h2.heading( style="margin-top: 0;" ) Add elm-canvas to your project
 
         pre.code
-          code( class="json" ).
-            {
-                "version": "1.0.0",
-                "summary": "Getting started with elm-canvas",
-                "repository": "https://github.com/you/your-canvas-app.git",
-                "license": "MIT",
-                "source-directories": [
-                    "src"
-                ],
-                "exposed-modules": [],
-                "dependencies": {
-                    "elm-lang/core": "5.0.0 <= v < 6.0.0",
-                    "elm-lang/html": "2.0.0 <= v < 3.0.0",
-                    "Elm-Canvas/elm-canvas": "0.2.0 <= v <= #{currentVersion}"
-                },
-                "dependency-sources": {
-                    "Elm-Canvas/elm-canvas": {
-                      "url": "https://github.com/Elm-Canvas/elm-canvas"
-                    }
-                },
-                "elm-version": "0.18.0 <= v < 0.19.0"
-            }
+          code( class="json" )
+            include /assets/scripts/example/elm-package.json
 
       .body-group
         h2.heading( style="margin-top: 0;" ) Install elm canvas
@@ -89,16 +69,30 @@ block body
 
             -- The elm-canvas core
             import Canvas
+
             -- Canvas coordinates
             import Canvas.Point
+
+            -- Canvas pixel methods
+            import Canvas.Point
+
+            -- Get basic mouse click events
+            import Canvas.Events
 
     .flex-spacer
     .page__footer
       a.page__footer-link.flex-spacer( href="#your-first-canvas-app" style="text-align: center;" )
         .heading Your first canvas app
 
-  .page#your-first-canvas-app
+
+  .page( style="height: auto;" )#your-first-canvas-app
     .page__body.body
+      .body-group
+        h2.heading( style="margin-top: 0;" ) Your first canvas Elm app
+
+        pre.code
+          code( class="elm" )
+            include /assets/scripts/example/src/Main.elm
 
     .flex-spacer
     .page__footer.gradient
