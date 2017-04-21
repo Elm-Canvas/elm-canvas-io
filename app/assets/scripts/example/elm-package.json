@@ -1,0 +1,22 @@
+{
+    "version": "1.0.0",
+    "summary": "Getting started with elm-canvas",
+    "repository": "https://github.com/you/your-canvas-app.git",
+    "license": "MIT",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core": "5.0.0 <= v < 6.0.0",
+        "elm-lang/html": "2.0.0 <= v < 3.0.0",
+        "Elm-Canvas/elm-canvas": "0.2.1 <= v <= 1.0.0"
+    },
+    "dependency-sources": {
+        "Elm-Canvas/elm-canvas": {
+          "url": "https://github.com/Elm-Canvas/elm-canvas",
+          "ref": "0.2.1"
+        }
+    },
+    "elm-version": "0.18.0 <= v < 0.19.0"
+}
