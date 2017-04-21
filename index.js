@@ -11,7 +11,8 @@ const app = express()
 
 app.set("port", port)
 app.set("view engine", "pug")
-app.set("views", path.resolve(__dirname, "app/views"))
+app.set("views", path.resolve(__dirname, "app", "views"))
+app.locals.basedir = path.resolve(__dirname, "app")
 
 // Middleware
 
